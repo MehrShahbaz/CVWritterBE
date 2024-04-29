@@ -54,7 +54,11 @@ module Api
       end
 
       def job_params
-        params.require(:job).permit(:name, :description, :url, :user_details, :organization_id, skill_ids: [])
+        params.require(:job).permit(:name, :description, :url,
+                                    :user_details,
+                                    :organization_id,
+                                    skill_ids: [],
+                                    skills_attributes: %i[name])
       end
 
       def serialized_jobs
