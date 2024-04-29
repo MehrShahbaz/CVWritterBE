@@ -7,13 +7,13 @@ module Api
       before_action :set_skill, only: %i[show update destroy]
 
       def index
-        @jobs = if params[:search]
-                  Skill.where('name LIKE ?', "%#{params[:search]}%")
-                else
-                  Skill.all
-                end
+        @skills = if params[:search]
+                    Skill.where('name LIKE ?', "%#{params[:search]}%")
+                  else
+                    Skill.all
+                  end
 
-        render json: @jobs
+        render json: @skills
       end
 
       def show
