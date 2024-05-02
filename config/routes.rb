@@ -8,8 +8,9 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1, defaults: { format: :json } do
-      resources :users
-      resources :jobs
+      resources :users do
+        resources :jobs
+      end
       resources :organizations, :skills
     end
   end

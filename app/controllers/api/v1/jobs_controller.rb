@@ -2,8 +2,9 @@
 
 module Api
   module V1
-    # jobs Controller
+    # Jobs Controller
     class JobsController < ApplicationController
+      before_action :set_user
       before_action :set_job, only: %i[show update destroy]
       before_action :set_search_jobs, only: %i[index]
 
@@ -16,7 +17,8 @@ module Api
       end
 
       def create
-        @job = Job.new(job_params)
+        byebug
+        @job = @user.jobs.new(job_params)
 
         if @job.save
           render json: @job, status: :created
@@ -40,16 +42,20 @@ module Api
 
       private
 
+      def set_user
+        @user = User.find_by(uid: params[:user_id])
+      end
+
       def set_job
-        @job = Job.find(params[:id])
+        @job = @user.jobs.find(params[:id])
       end
 
       def set_search_jobs
-        @jobs = Job.where('name ILIKE :search', search: "%#{params[:search]}%")
-                   .order(:name)
-                   .page(params[:page] || 1)
-                   .per(params[:per_page] || 5)
-                   .distinct
+        @jobs = @user.jobs.where('name ILIKE :search', search: "%#{params[:search]}%")
+                           .order(:name)
+                           .page(params[:page] || 1)
+                           .per(params[:per_page] || 5)
+                           .distinct
         @count = @jobs.total_count
       end
 
