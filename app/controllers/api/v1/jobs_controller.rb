@@ -51,7 +51,7 @@ module Api
 
       def set_search_jobs
         @jobs = @user.jobs.where('name ILIKE :search', search: "%#{params[:search]}%")
-                           .order(id: :desc)
+                     .order(id: :desc)
         @count = @jobs.count
       end
 
