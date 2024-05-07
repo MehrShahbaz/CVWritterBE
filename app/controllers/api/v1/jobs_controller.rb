@@ -17,7 +17,6 @@ module Api
       end
 
       def create
-        byebug
         @job = @user.jobs.new(job_params)
 
         if @job.save
@@ -52,11 +51,8 @@ module Api
 
       def set_search_jobs
         @jobs = @user.jobs.where('name ILIKE :search', search: "%#{params[:search]}%")
-                           .order(:name)
-                           .page(params[:page] || 1)
-                           .per(params[:per_page] || 5)
-                           .distinct
-        @count = @jobs.total_count
+                           .order(id: :desc)
+        @count = @jobs.count
       end
 
       def job_params
