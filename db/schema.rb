@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_27_203405) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_02_083840) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -31,7 +31,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_27_203405) do
     t.bigint "organization_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["organization_id"], name: "index_jobs_on_organization_id"
+    t.index ["user_id"], name: "index_jobs_on_user_id"
   end
 
   create_table "organizations", force: :cascade do |t|
@@ -49,7 +51,19 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_27_203405) do
     t.index ["name"], name: "index_skills_on_name", unique: true
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "uid", null: false
+    t.string "email", null: false
+    t.string "details", null: false
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["uid"], name: "index_users_on_uid", unique: true
+  end
+
   add_foreign_key "job_skills", "jobs"
   add_foreign_key "job_skills", "skills"
   add_foreign_key "jobs", "organizations"
+  add_foreign_key "jobs", "users"
 end
